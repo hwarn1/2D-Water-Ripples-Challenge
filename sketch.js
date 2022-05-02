@@ -1,8 +1,3 @@
-let cols = 200;
-let rows = 200;
-let current; // = new float[cols][rows];
-let previous; // = new float[cols][rows];
-
 let dampening = 0.99;
 
 function setup() {
@@ -15,7 +10,7 @@ function setup() {
 
 }
 
-function mouseClicked() {
+function mouseDragged() {
   previous[mouseX][mouseY] = 500;
 } 
 
@@ -34,7 +29,6 @@ function draw() {
       current[x][y] = current[x][y] * dampening;
       
       let index = (x + y * cols) * 4;
-      pixels[index] = color(current[x][y]);
       pixels[index + 0] = current[x][y];
       pixels[index + 1] = current[x][y];
       pixels[index + 2] = current[x][y];
