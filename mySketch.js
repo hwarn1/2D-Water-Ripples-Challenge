@@ -53,15 +53,9 @@ function scene1() {
         current[x][y];
       current[x][y] = current[x][y] * dampening;
       let index = (x + y * cols) * 4
-        if (keyIsPressed && keyCode === 82) {
-        pixels[index + 0] = current[x][y];
-        pixels[index + 1] = current[x][y+1];
-        pixels[index + 2] = current[x][y-1];
-        } else {
           pixels[index + 0] = current[x][y];
           pixels[index + 1] = current[x][y+1];
           pixels[index + 2] = current[x][y-1];
-          }
     }
   }
   updatePixels();
@@ -78,23 +72,7 @@ function keyPressed() {
   } else if (keyCode === 32 && sceneNum === 1) {
     sceneNum = 0;
   }
-  if (keyCode === 82 && sceneNum === 1) {
-    for (let x = 1; x < cols - 1; x++) {
-      for (let y = 1; y < rows - 1; y++) {
-        current[x][y] = (
-          previous[x-1][y] + 
-          previous[x+1][y] +
-          previous[x][y-1] + 
-          previous[x][y+1]) / 1.999 - 
-          current[x][y];
-        current[x][y] = current[x][y] * dampening;
-          let index = (x + y * cols) * 4
-          pixels[index + 0] = current[x][y];
-          pixels[index + 1] = current[x][y+1];
-          pixels[index + 2] = current[x][y-1];
-          } 
-    }
-  }else if (sceneNum === 1) {
+   if (keyCode === 82) {
       for (let x = 1; x < cols - 1; x++) {
         for (let y = 1; y < rows - 1; y++) {
           current[x][y] = (
@@ -115,7 +93,9 @@ function keyPressed() {
 
 
 function mouseDragged() {
-  previous[mouseX][mouseY] = 600;
+  if (sceneNum === 1) {
+    previous[mouseX][mouseY] = 600;
+  }
 }
 
 function draw() {
