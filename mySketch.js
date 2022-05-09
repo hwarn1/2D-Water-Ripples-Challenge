@@ -63,7 +63,16 @@ function scene1() {
   let temp = previous;
   previous = current;
   current = temp;
+  
+  //buttons
+  text("Intensity", 10, 23);
+  //rect(10, 40, 25, 25);
+  text("▲", 15, 45);
+  //rect(10, 80, 25, 25);
+  text("▼", 15, 85);
   }
+
+
 
 function keyPressed() {
   
@@ -96,6 +105,16 @@ function mouseDragged() {
   if (sceneNum === 1) {
     previous[mouseX][mouseY] = 600;
   }
+}
+
+function mouseClicked() {
+  
+  if (mouseX >= 10 && mouseX <= 30 && mouseY >= 35 && mouseY <= 50) {
+    dampening += 0.001;
+  } else if (mouseX >= 10 && mouseX <= 30 && mouseY >= 75 && mouseY <= 90) {
+    dampening -= 0.005;
+  }
+  
 }
 
 function draw() {
