@@ -11,7 +11,7 @@ let current;
 let previous;
 
 //some non-integer between 0 and 1
-let dampening = 0.995;
+let damping = 0.995;
 
 function setup() {
   pixelDensity(1);
@@ -37,11 +37,8 @@ function scene0() {
   
 }
 
-
-function scene1() {
-  sceneNum = 1
-  //square pixels arranged in columns and rows
-  loadPixels();
+function pinkRips() {
+  
   //for every non-edge element, loop through:
   for (let x = 1; x < cols - 1; x++) {
     for (let y = 1; y < rows - 1; y++) {
@@ -51,13 +48,57 @@ function scene1() {
         previous[x][y-1] + 
         previous[x][y+1]) / 1.999 - 
         current[x][y];
-      current[x][y] = current[x][y] * dampening;
+      current[x][y] = current[x][y] * damping;
       let index = (x + y * cols) * 4
           pixels[index + 0] = current[x][y];
           pixels[index + 1] = current[x][y+1];
           pixels[index + 2] = current[x][y-1];
     }
   }
+}
+
+function whiteRips() {
+  
+  //for every non-edge element, loop through:
+  for (let x = 1; x < cols - 1; x++) {
+    for (let y = 1; y < rows - 1; y++) {
+      current[x][y] = (
+        previous[x-1][y] + 
+        previous[x+1][y] +
+        previous[x][y-1] + 
+        previous[x][y+1]) / 1.999 - 
+        current[x][y];
+      current[x][y] = current[x][y] * damping;
+      let index = (x + y * cols) * 4
+          pixels[index + 0] = current[x][y];
+          pixels[index + 1] = current[x][y];
+          pixels[index + 2] = current[x][y];
+    }
+  }
+  
+}
+
+function scene1() {
+  sceneNum = 1
+  //square pixels arranged in columns and rows
+  loadPixels();
+  /*//for every non-edge element, loop through:
+  for (let x = 1; x < cols - 1; x++) {
+    for (let y = 1; y < rows - 1; y++) {
+      current[x][y] = (
+        previous[x-1][y] + 
+        previous[x+1][y] +
+        previous[x][y-1] + 
+        previous[x][y+1]) / 1.999 - 
+        current[x][y];
+      current[x][y] = current[x][y] * damping;
+      let index = (x + y * cols) * 4
+          pixels[index + 0] = current[x][y];
+          pixels[index + 1] = current[x][y+1];
+          pixels[index + 2] = current[x][y-1];
+    }
+  }*/
+  
   updatePixels();
   
   let temp = previous;
@@ -65,11 +106,23 @@ function scene1() {
   current = temp;
   
   //buttons
+  fill(0);
+  rect(7, 10, 60, 20);
+  fill(255);
   text("Intensity", 10, 23);
-  //rect(10, 40, 25, 25);
+  fill(0);
+  rect(10, 30, 25, 25);
+  fill(255);
   text("▲", 15, 45);
-  //rect(10, 80, 25, 25);
+  fill(0);
+  rect(10, 70, 25, 25);
+  fill(255);
   text("▼", 15, 85);
+  
+  fill(0);
+  rect(width - 50, 5, 40, 20);
+  fill(300, 150, 200);
+  text("pink", width - 45, 20)
   }
 
 
@@ -90,7 +143,7 @@ function keyPressed() {
             previous[x][y-1] + 
             previous[x][y+1]) / 1.999 - 
             current[x][y];
-          current[x][y] = current[x][y] * dampening;
+          current[x][y] = current[x][y] * damping;
               let index = (x + y * cols) * 4
               pixels[index + 0] = current[x][y];
               pixels[index + 1] = current[x][y];
@@ -110,11 +163,15 @@ function mouseDragged() {
 function mouseClicked() {
   
   if (mouseX >= 10 && mouseX <= 30 && mouseY >= 35 && mouseY <= 50) {
-    dampening += 0.001;
+    damping += 0.001;
   } else if (mouseX >= 10 && mouseX <= 30 && mouseY >= 75 && mouseY <= 90) {
-    dampening -= 0.005;
+    damping -= 0.005;
   }
-  
+  if (mouseX >= width - 50 && mouseX <= width - 10 && mouseY >= 5 && mouseY <= 25) {
+    pinkRips();
+  } else {
+    whiteRips();
+  }
 }
 
 function draw() {
