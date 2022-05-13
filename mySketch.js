@@ -23,6 +23,9 @@ function setup() {
   previous = new Array(cols).fill(0).map(n => new Array(rows).fill(0));
 }
 var sceneNum = 0;
+let pinkButton = false;
+let blueButton = false;
+let bowButton = false;
 
 function scene0() {
   
@@ -53,6 +56,46 @@ function pinkRips() {
           pixels[index + 0] = current[x][y];
           pixels[index + 1] = current[x][y+1];
           pixels[index + 2] = current[x][y-1];
+    }
+  }
+}
+
+function blueRips() {
+  
+  //for every non-edge element, loop through:
+  for (let x = 1; x < cols - 1; x++) {
+    for (let y = 1; y < rows - 1; y++) {
+      current[x][y] = (
+        previous[x-1][y] + 
+        previous[x+1][y] +
+        previous[x][y-1] + 
+        previous[x][y+1]) / 1.999 - 
+        current[x][y];
+      current[x][y] = current[x][y] * damping;
+      let index = (x + y * cols) * 4
+          pixels[index + 0] = current[x][y+3];
+          pixels[index + 1] = current[x][y];
+          pixels[index + 2] = current[x][y];
+    }
+  }
+}
+
+function bowRips() {
+  
+  //for every non-edge element, loop through:
+  for (let x = 1; x < cols - 1; x++) {
+    for (let y = 1; y < rows - 1; y++) {
+      current[x][y] = (
+        previous[x-1][y] + 
+        previous[x+1][y] +
+        previous[x][y-1] + 
+        previous[x][y+1]) / 1.999 - 
+        current[x][y];
+      current[x][y] = current[x][y] * damping;
+      let index = (x + y * cols) * 4
+          pixels[index + 0] = current[x+1][y];
+          pixels[index + 1] = current[x][y];
+          pixels[index + 2] = current[x][y+1];
     }
   }
 }
@@ -98,6 +141,15 @@ function scene1() {
           pixels[index + 2] = current[x][y-1];
     }
   }*/
+  if (pinkButton === true) {
+    pinkRips();
+  } else if (blueButton === true) {
+    blueRips();
+  } else if (bowButton === true) {
+    bowRips();
+  } else {
+    whiteRips();
+  }
   
   updatePixels();
   
@@ -119,10 +171,29 @@ function scene1() {
   fill(255);
   text("▼", 15, 85);
   
+  //pink
   fill(0);
-  rect(width - 50, 5, 40, 20);
+  rect(width - 60, 5, 55, 20);
   fill(300, 150, 200);
-  text("pink", width - 45, 20)
+  text("pink", width - 55, 20)
+  
+  //blue
+  fill(0);
+  rect(width - 60, 25, 55, 20);
+  fill(300, 150, 200);
+  text("blue", width - 55, 40)
+  
+  //bow
+  fill(0);
+  rect(width - 60, 45, 55, 20);
+  fill(300, 150, 200);
+  text("rainbow", width - 55, 60)
+  
+  //white
+  fill(0);
+  rect(width - 60, 65, 55, 20);
+  fill(300, 150, 200);
+  text("white", width - 55, 80)
   }
 
 
@@ -167,10 +238,22 @@ function mouseClicked() {
   } else if (mouseX >= 10 && mouseX <= 30 && mouseY >= 75 && mouseY <= 90) {
     damping -= 0.005;
   }
-  if (mouseX >= width - 50 && mouseX <= width - 10 && mouseY >= 5 && mouseY <= 25) {
-    pinkRips();
-  } else {
-    whiteRips();
+  if (mouseX >= width - 60 && mouseX <= width - 10 && mouseY >= 5 && mouseY <= 25) {
+    pinkButton = true;
+    blueButton = false;
+    bowButton = false;
+  } if (mouseX >= width - 60 && mouseX <= width -10 && mouseY >= 25 && mouseY <= 45) {
+    blueButton = true;
+    pinkButton = false;
+    bowButton = false;
+  } if (mouseX >= width - 60 && mouseX <= width -10 && mouseY >= 45 && mouseY <= 65) {
+    bowButton = true;
+    pinkButton = false;
+    blueButton = false;
+  } if (mouseX >= width - 60 && mouseX <= width -10 && mouseY >= 65 && mouseY <= 85) {
+    bowButton = false;
+    pinkButton = false;
+    blueButton = false;
   }
 }
 
@@ -182,4 +265,5 @@ function draw() {
   if (sceneNum === 1) {
     scene1();
   }
+  //scene1();
 }
