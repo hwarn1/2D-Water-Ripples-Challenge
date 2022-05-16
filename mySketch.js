@@ -30,13 +30,18 @@ let bowButton = false;
 function scene0() {
   
   sceneNum = 0;
-  background(10, 150, 300);
-  fill(255);
+  background(0);
+  //background(10, 150, 300);
+  fill(10, 150, 300);
   textSize(30);
   text("2D Water Ripples", 175, 100);
+  fill(200, 50, 150);
   textSize(15);
-  text("Press the space bar to view the simulation", 175, 150);
-  text("Press 'r' to change suck the ripples back", 175, 180);
+  text("Press the space bar to view the simulation", 150, 150);
+  fill(100, 200, 100);
+  text("Press 'r' to change suck the ripples back", 155, 200);
+  fill(150, 50, 250);
+  text("Press the space bar at any time to return to this page", 115, 250)
   
 }
 
