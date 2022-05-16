@@ -1,10 +1,12 @@
+//Hadley---
+
 //create global variables
 let cols;
 let rows;
 let previous;
 let current;
 
-let damping = 0.99;
+let damping = 0.99; /////Min
 
 function setup() {
   pixelDensity(1);
@@ -18,9 +20,17 @@ function setup() {
   previous = new Array(cols).fill(0).map(n => new Array(rows).fill(0));
 }
 
+//Hadley^^^^
+
+//Ainsley---
+
 function mouseDragged() {
   previous[mouseX][mouseY] = 500;
 }
+
+//Ainsley^^^^
+
+//Min---
 
 function draw() {
   
@@ -35,18 +45,26 @@ function draw() {
         previous[x][y+1]) /2 -
         current[x][y];
       current[x][y] = current[x][y] * damping;
+      
+      //Ainsley---
       //4 colour entries
       let index = (x + y * cols) * 4;
       pixels[index+0] = current[x][y];
       pixels[index+1] = current[x][y];
       pixels[index+2] = current[x][y];
     }
+      //Ainsley^^^^
   }
   
-
+//Min^^^^
+  
+//Ainsley---
+  
   updatePixels();
 
   let temp = previous;
   previous = current;
   current = temp;
 }
+
+//Ainsley^^^^
